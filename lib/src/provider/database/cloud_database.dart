@@ -6,8 +6,8 @@ class FirebaseCloud {
 
   static final FirebaseCloud firebaseCloud = FirebaseCloud._();
   final FirebaseFirestore dbFirestore = FirebaseFirestore.instance;
-  late final CollectionReference collectionReference;
-  late final DocumentReference documentReference;
+  late CollectionReference collectionReference;
+  late DocumentReference documentReference;
   final String _collectionName = "keep_notes";
 
   void createCollection() {
@@ -16,7 +16,7 @@ class FirebaseCloud {
 
   void createDocument({required String userId}) {
     documentReference = collectionReference.doc(userId);
-  } 
+  }
 
   Stream<QuerySnapshot<Object?>> getData() {
     return documentReference.collection("notes").snapshots();
