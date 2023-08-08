@@ -1,9 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get_user/src/provider/firebase_auth_helper.dart';
-import 'package:get_user/src/provider/local_database.dart';
+import 'package:get_user/src/provider/authentication/firebase_auth_helper.dart';
+import 'package:get_user/src/provider/database/local_database.dart';
 import 'package:get_user/src/view/home_screen.dart';
+
+import '../provider/database/cloud_database.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -29,7 +31,12 @@ class _LoginScreenState extends State<LoginScreen> {
             onPressed: () async {
               User? user =
                   await FirebaseAuthHelper.firebaseAuthHelper.singWithGoogle();
-              (user != null) ? _buildStatus(true) : _buildStatus(false);
+              if (user != null) {
+                FirebaseCloud.firebaseCloud.createDocument(userId: user.uid);
+                _buildStatus(true);
+              } else {
+                _buildStatus(false);
+              }
             },
             child: const Row(
               children: [

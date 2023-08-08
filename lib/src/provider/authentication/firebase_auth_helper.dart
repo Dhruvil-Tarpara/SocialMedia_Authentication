@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -7,14 +9,17 @@ class FirebaseAuthHelper {
   static final FirebaseAuthHelper firebaseAuthHelper = FirebaseAuthHelper._();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final AppleAuthProvider appleAuthProvider = AppleAuthProvider();
-  final GoogleSignIn googleSignIn = GoogleSignIn(
-    clientId:
-        "953226139203-m30riok47kqvc3ticpdd64aqslk9mccj.apps.googleusercontent.com",
-    scopes: ["email"],
-  );
+  GoogleSignIn googleSignIn = GoogleSignIn();
 
   Future<User?> singWithGoogle() async {
     try {
+      if (Platform.isIOS) {
+        googleSignIn = GoogleSignIn(
+          clientId:
+              "953226139203-m30riok47kqvc3ticpdd64aqslk9mccj.apps.googleusercontent.com",
+          scopes: ["email"],
+        );
+      }
       GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
       GoogleSignInAuthentication? googleAuth =
           await googleSignInAccount?.authentication;

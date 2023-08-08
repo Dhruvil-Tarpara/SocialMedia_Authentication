@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'src/my_app.dart';
-import 'src/provider/local_database.dart';
+import 'src/provider/database/local_database.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

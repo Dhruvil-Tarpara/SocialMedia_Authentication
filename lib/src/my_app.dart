@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'provider/local_database.dart';
-import 'view/home_screen.dart';
-import 'view/login_screen.dart';
+import 'package:get_user/src/provider/database/cloud_database.dart';
+import 'view/splash_screen.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -13,12 +11,17 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
+  void initState() {
+    FirebaseCloud.firebaseCloud.createCollection();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: (SPHelper.prefs.getBool("is_login") ?? false)
-          ? const HomeScreen()
-          : const LoginScreen(),
+      theme: ThemeData(useMaterial3: true),
+      home: const SplashScreen(),
     );
   }
 }
