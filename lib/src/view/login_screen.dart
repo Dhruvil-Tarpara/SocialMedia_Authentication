@@ -32,7 +32,12 @@ class _LoginScreenState extends State<LoginScreen> {
               User? user =
                   await FirebaseAuthHelper.firebaseAuthHelper.singWithGoogle();
               if (user != null) {
-                FirebaseCloud.firebaseCloud.createDocument(userId: user.uid);
+                SPHelper.spHelper.getUser(
+                  userUid: user.uid,
+                  userEmail: user.email!,
+                  userPhoto: user.photoURL!,
+                );
+                FirebaseCloud.firebaseCloud.createDocument();
                 _buildStatus(true);
               } else {
                 _buildStatus(false);

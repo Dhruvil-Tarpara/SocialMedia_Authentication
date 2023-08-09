@@ -13,6 +13,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     FirebaseCloud.firebaseCloud.createCollection();
+    FirebaseCloud.firebaseCloud.createDocument();
     super.initState();
   }
 

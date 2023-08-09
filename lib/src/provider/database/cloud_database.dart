@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_user/src/provider/model.dart';
 
+import 'local_database.dart';
+
 class FirebaseCloud {
   FirebaseCloud._();
 
@@ -14,8 +16,9 @@ class FirebaseCloud {
     collectionReference = dbFirestore.collection(_collectionName);
   }
 
-  void createDocument({required String userId}) {
-    documentReference = collectionReference.doc(userId);
+  void createDocument() {
+    documentReference =
+        collectionReference.doc(SPHelper.prefs.getString("user_uid") ?? "");
   }
 
   Stream<QuerySnapshot<Object?>> getData() {

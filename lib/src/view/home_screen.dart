@@ -61,13 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
               child: CommonText(text: snapshot.error.toString()),
             );
           } else if (snapshot.hasData) {
-            var allData = snapshot.data?.docs;
+            var data = snapshot.data?.docs;
 
-            // List<Note> data = allData!
-            //     .map((e) => Note.fromJson(jsonDecode(e.toString())))
-            //     .toList();
-            // print(data[0].body);
-            return (allData!.isNotEmpty)
+            List<Note> allData = data!.map((e) => Note.fromStream(e)).toList();
+
+            return (allData.isNotEmpty)
                 ? ListView.builder(
                     itemCount: allData.length,
                     itemBuilder: (context, index) => Card(
@@ -85,27 +83,27 @@ class _HomeScreenState extends State<HomeScreen> {
                             _buildPageTransitionAnimation(
                               page: DetailScreen(
                                 note: Note(
-                                    title: allData[index]["title"],
-                                    body: allData[index]["body"]),
-                                doc: allData[index].id,
+                                    title: allData[index].title,
+                                    body: allData[index].body),
+                                doc: data[index].id,
                                 isAdd: false,
                               ),
                             ),
                           );
                         },
                         title: CommonText(
-                          text: allData[index]["title"],
+                          text: allData[index].title,
                           fontWeight: FontWeight.bold,
                           size: 20,
                         ),
                         subtitle: CommonText(
-                          text: allData[index]["body"],
+                          text: allData[index].body,
                           size: 16,
                         ),
                         trailing: IconButton(
                           onPressed: () {
                             FirebaseCloud.firebaseCloud
-                                .deleteData(doc: allData[index].id);
+                                .deleteData(doc: data[index].id);
                           },
                           icon: Icon(
                             Icons.delete,
