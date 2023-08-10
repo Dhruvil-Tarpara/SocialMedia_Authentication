@@ -1,12 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_user/src/constant/const_colors.dart';
 import 'package:get_user/src/constant/widgets/common_text.dart';
 import 'package:get_user/src/provider/authentication/firebase_auth_helper.dart';
 import 'package:get_user/src/provider/database/local_database.dart';
-import 'package:get_user/src/provider/model.dart';
-import 'package:get_user/src/view/login_screen.dart';
+import 'package:get_user/src/provider/firebase_analytics.dart';
+import 'package:get_user/src/provider/model/model.dart';
 import '../provider/database/cloud_database.dart';
+import 'auth/login_screen.dart';
 import 'details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -62,9 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           } else if (snapshot.hasData) {
             var data = snapshot.data?.docs;
-
             List<Note> allData = data!.map((e) => Note.fromStream(e)).toList();
-
             return (allData.isNotEmpty)
                 ? ListView.builder(
                     itemCount: allData.length,
@@ -124,7 +125,8 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         hoverElevation: 0.6,
-        onPressed: () {
+        onPressed: () async {
+          await Analytics.analytics.notesEvent(1);
           Navigator.of(context).push(
             _buildPageTransitionAnimation(
               page: DetailScreen(
@@ -142,45 +144,6 @@ class _HomeScreenState extends State<HomeScreen> {
           Icons.add,
           color: ConstColor.backgroundColor,
         ),
-      ),
-    );
-  }
-
-  Widget _userPermission({required int index}) {
-    return AlertDialog(
-      title: const CommonText(
-          text: "Delete Alert", color: Colors.red, fontWeight: FontWeight.w500),
-      actions: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(
-                Icons.done,
-                color: Colors.green,
-              ),
-            ),
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(
-                Icons.close,
-                color: Colors.red,
-              ),
-            ),
-          ],
-        ),
-      ],
-      content: const CommonText(
-        text: "Are you Sure ..!",
-        color: Colors.black,
-        fontWeight: FontWeight.w400,
-        size: 18,
       ),
     );
   }

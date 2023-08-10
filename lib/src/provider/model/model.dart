@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 Note welcomeFromJson(String str) => Note.fromJson(json.decode(str));
@@ -30,3 +29,5 @@ class Note {
         "body": body,
       };
 }
+
+

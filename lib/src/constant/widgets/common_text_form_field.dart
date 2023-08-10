@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CommonTextFormField extends StatelessWidget {
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final TextInputType textInputType;
   final String hintText;
   final Widget? labelText;
   final String? Function(String?)? validator;
   final bool? obscureText;
   final Widget? suffix;
+  final Widget? prefix;
   final int? maxLine;
   final TextStyle? textStyle;
   final void Function(String)? onChanged;
@@ -15,7 +16,7 @@ class CommonTextFormField extends StatelessWidget {
 
   const CommonTextFormField({
     super.key,
-    required this.controller,
+    this.controller,
     required this.textInputType,
     required this.hintText,
     this.validator,
@@ -26,6 +27,7 @@ class CommonTextFormField extends StatelessWidget {
     this.textStyle,
     this.onChanged,
     this.readOnly,
+    this.prefix,
   });
 
   @override
@@ -41,6 +43,7 @@ class CommonTextFormField extends StatelessWidget {
       validator: validator,
       decoration: InputDecoration(
         filled: true,
+        prefixIcon: prefix,
         fillColor: Colors.green.shade50,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),

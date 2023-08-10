@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get_user/src/constant/const_colors.dart';
 import 'package:get_user/src/provider/database/local_database.dart';
+import 'package:get_user/src/utils/media_query.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -27,9 +29,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(),
+    return Scaffold(
+      backgroundColor: ConstColor.backgroundColor,
+      body: Center(
+        child: SizedBox(
+          height: size(context: context).height * 0.5,
+          child: Image.asset("assets/logo.gif"),
+        ),
+      ),
     );
   }
 }

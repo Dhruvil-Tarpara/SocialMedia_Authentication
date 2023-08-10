@@ -1,5 +1,5 @@
+import 'package:get_user/src/view/auth/login_screen.dart';
 import 'package:get_user/src/view/home_screen.dart';
-import 'package:get_user/src/view/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SPHelper {
@@ -21,7 +21,11 @@ class SPHelper {
     if (SPHelper.prefs.getBool("is_login") ?? false) {
       return const HomeScreen();
     } else {
-      return const LoginScreen();
+      if (SPHelper.prefs.getBool("is_signUp") ?? false) {
+        return const LoginScreen();
+      } else {
+        return const LoginScreen();
+      }
     }
   }
 }

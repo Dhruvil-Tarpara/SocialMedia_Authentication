@@ -1,8 +1,12 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get_user/src/provider/database/local_database.dart';
+import 'package:get_user/src/provider/firebase_analytics.dart';
+import 'package:get_user/src/provider/model/user_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import 'exaption_handle.dart';
 
 class FirebaseAuthHelper {
   FirebaseAuthHelper._();
@@ -11,7 +15,80 @@ class FirebaseAuthHelper {
   final AppleAuthProvider appleAuthProvider = AppleAuthProvider();
   GoogleSignIn googleSignIn = GoogleSignIn();
 
-  Future<User?> singWithGoogle() async {
+  Future<UserData> signUpWithEmailPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      UserCredential credential =
+          await firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      await Analytics.analytics.loginEvent("true");
+      return UserData(error: null, user: credential.user!);
+    } catch (e) {
+      final status = AuthExceptionHandler.handleException(e);
+      await Analytics.analytics.loginEvent("false");
+      return UserData(
+          error: AuthExceptionHandler.generateExceptionMessage(status),
+          user: null);
+    }
+  }
+
+  Future<UserData> signInwithEmailPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      UserCredential credential = await firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      await Analytics.analytics.loginEvent("true");
+      SPHelper.spHelper.getUser(
+        userUid: credential.user!.uid,
+        userEmail: credential.user?.email ?? "",
+        userPhoto: credential.user?.photoURL ?? "",
+      );
+      return UserData(error: null, user: credential.user!);
+    } catch (e) {
+      final status = AuthExceptionHandler.handleException(e);
+      await Analytics.analytics.loginEvent("false");
+      return UserData(
+          error: AuthExceptionHandler.generateExceptionMessage(status),
+          user: null);
+    }
+  }
+
+  Future<UserData> signInWithPhoneNumber(
+      {required String otp, required String number}) async {
+    var status = "";
+    UserCredential? userCredential;
+    await firebaseAuth.verifyPhoneNumber(
+      phoneNumber: ("+91") + number,
+      timeout: const Duration(seconds: 45),
+      codeSent: (String verificationId, int? resendToken) async {
+        PhoneAuthProvider.credential(
+            verificationId: verificationId, smsCode: otp);
+        // userCredential = await firebaseAuth.signInWithCredential(credential);
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        userCredential = await firebaseAuth.signInWithCredential(credential);
+      },
+      verificationFailed: (failed) async {
+        status = AuthExceptionHandler.handleException(failed);
+        await Analytics.analytics.loginEvent("false");
+      },
+    );
+    return UserData(
+      error: AuthExceptionHandler.generateExceptionMessage(status),
+      user: userCredential?.user,
+    );
+  }
+
+  Future<UserData> signInWithGoogle() async {
     try {
       if (Platform.isIOS) {
         googleSignIn = GoogleSignIn(
@@ -29,13 +106,23 @@ class FirebaseAuthHelper {
       );
       UserCredential userCredential =
           await firebaseAuth.signInWithCredential(credential);
-      return userCredential.user;
+      SPHelper.spHelper.getUser(
+        userUid: userCredential.user!.uid,
+        userEmail: userCredential.user?.email ?? "",
+        userPhoto: userCredential.user?.photoURL ?? "",
+      );
+      await Analytics.analytics.loginEvent("true");
+      return UserData(error: null, user: userCredential.user!);
     } catch (e) {
-      return null;
+      final status = AuthExceptionHandler.handleException(e);
+      await Analytics.analytics.loginEvent("false");
+      return UserData(
+          error: AuthExceptionHandler.generateExceptionMessage(status),
+          user: null);
     }
   }
 
-  Future<User?> signInWithApple() async {
+  Future<UserData> signInWithApple() async {
     UserCredential userCredential;
     try {
       if (kIsWeb) {
@@ -44,9 +131,23 @@ class FirebaseAuthHelper {
         userCredential =
             await firebaseAuth.signInWithProvider(appleAuthProvider);
       }
-      return userCredential.user;
+      await Analytics.analytics.loginEvent("true");
+      return UserData(error: null, user: userCredential.user!);
     } catch (e) {
+      final status = AuthExceptionHandler.handleException(e);
+      await Analytics.analytics.loginEvent("false");
+      return UserData(
+          error: AuthExceptionHandler.generateExceptionMessage(status),
+          user: null);
+    }
+  }
+
+  Future<String?> resetPassword(String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       return null;
+    } catch (e) {
+      return "ResetPassword failed...";
     }
   }
 
