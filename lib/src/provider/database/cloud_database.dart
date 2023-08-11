@@ -16,8 +16,8 @@ class FirebaseCloud {
   }
 
   void createDocument() {
-    documentReference = collectionReference.doc(
-        SPHelper.prefs.getString("user_uid") ?? "5gJLm4KGShTkHVt6B823gKVW36j1");
+    documentReference =
+        collectionReference.doc(SPHelper.prefs.getString("user_uid") ?? "");
   }
 
   Stream<QuerySnapshot<Object?>> getData() {

@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_user/src/constant/const_colors.dart';
 import 'package:get_user/src/constant/widgets/common_text.dart';
@@ -24,6 +25,35 @@ class _PhoneScreenState extends State<PhoneScreen> {
   final GlobalKey<FormState> _loginKey = GlobalKey<FormState>();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();
+  String _verificationId = '';
+
+  Future<void> _verifyPhoneNumber() async {
+    await FirebaseAuthHelper.firebaseAuthHelper.firebaseAuth.verifyPhoneNumber(
+      phoneNumber: ("+91") + _phoneController.text,
+      timeout: const Duration(seconds: 45),
+      codeSent: (String verificationId, int? resendToken) async {
+        setState(() {
+          _verificationId = verificationId;
+        });
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        setState(() {
+          _verificationId = verificationId;
+        });
+      },
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await FirebaseAuthHelper.firebaseAuthHelper.firebaseAuth
+            .signInWithCredential(credential);
+      },
+      verificationFailed: (failed) async {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Somthing want to wrong..."),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,32 +120,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                         _valueNotifier.value =
                             AutovalidateMode.onUserInteraction;
                         if (_loginKey.currentState!.validate()) {
-                          UserData user = await FirebaseAuthHelper
-                              .firebaseAuthHelper
-                              .signInWithPhoneNumber(
-                                  number: _phoneController.text.trim(),
-                                  otp: _otpController.text.trim());
-                          if (user.user != null) {
-                            print("helllo");
-                            FirebaseCloud.firebaseCloud.createDocument();
-
-                            SPHelper.prefs.setBool("is_login", true).then(
-                                  (value) =>
-                                      Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (context) => const HomeScreen(),
-                                    ),
-                                  ),
-                                );
-                          } else {
-                            print("by");
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(user.error ?? ""),
-                              ),
-                            );
-                          }
+                          await _verifyPhoneNumber();
                           await otpDialogBox(context);
                         }
                       },
@@ -183,10 +188,9 @@ class _PhoneScreenState extends State<PhoneScreen> {
               onPressed: () async {
                 UserData user = await FirebaseAuthHelper.firebaseAuthHelper
                     .signInWithPhoneNumber(
-                        number: _phoneController.text.trim(),
-                        otp: _otpController.text.trim());
+                        verificationId: _verificationId,
+                        smsCode: _otpController.text.trim());
                 if (user.user != null) {
-                  print("helllo");
                   FirebaseCloud.firebaseCloud.createDocument();
                   _otpController.clear();
                   _phoneController.clear();
@@ -198,9 +202,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                         ),
                       );
                 } else {
-                  print("by");
                   _otpController.clear();
-
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

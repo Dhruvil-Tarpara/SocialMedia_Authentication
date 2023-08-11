@@ -62,30 +62,31 @@ class FirebaseAuthHelper {
   }
 
   Future<UserData> signInWithPhoneNumber(
-      {required String otp, required String number}) async {
-    var status = "";
-    UserCredential? userCredential;
-    await firebaseAuth.verifyPhoneNumber(
-      phoneNumber: ("+91") + number,
-      timeout: const Duration(seconds: 45),
-      codeSent: (String verificationId, int? resendToken) async {
-        PhoneAuthProvider.credential(
-            verificationId: verificationId, smsCode: otp);
-        // userCredential = await firebaseAuth.signInWithCredential(credential);
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {},
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        userCredential = await firebaseAuth.signInWithCredential(credential);
-      },
-      verificationFailed: (failed) async {
-        status = AuthExceptionHandler.handleException(failed);
-        await Analytics.analytics.loginEvent("false");
-      },
+      {required String smsCode, required String verificationId}) async {
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+      verificationId: verificationId,
+      smsCode: smsCode,
     );
-    return UserData(
-      error: AuthExceptionHandler.generateExceptionMessage(status),
-      user: userCredential?.user,
-    );
+    try {
+      UserCredential userCredential =
+          await firebaseAuth.signInWithCredential(credential);
+          await Analytics.analytics.loginEvent("true");
+      SPHelper.spHelper.getUser(
+        userUid: userCredential.user!.uid,
+        userEmail: userCredential.user?.email ?? "",
+        userPhoto: userCredential.user?.photoURL ?? "",
+      );
+      return UserData(
+        error: "",
+        user: userCredential.user,
+      );
+    } catch (e) {
+      final status = AuthExceptionHandler.handleException(e);
+      await Analytics.analytics.loginEvent("false");
+      return UserData(
+          error: AuthExceptionHandler.generateExceptionMessage(status),
+          user: null);
+    }
   }
 
   Future<UserData> signInWithGoogle() async {
