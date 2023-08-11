@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'common_text.dart';
+import 'text.dart';
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason> commonShowSnackBar(
         BuildContext context, String text, Color color) =>

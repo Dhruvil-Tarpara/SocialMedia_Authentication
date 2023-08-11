@@ -1,9 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:get_user/src/constant/widgets/common_text.dart';
-import 'package:get_user/src/constant/widgets/common_text_form_field.dart';
+import 'package:get_user/src/constant/global.dart';
+import 'package:get_user/src/constant/widgets/text.dart';
+import 'package:get_user/src/constant/widgets/text_form_field.dart';
 import 'package:get_user/src/provider/authentication/firebase_auth_helper.dart';
+import 'package:get_user/src/provider/database/local_database.dart';
 import 'package:get_user/src/provider/model/user_model.dart';
 import 'package:get_user/src/utils/media_query.dart';
 import 'package:get_user/src/utils/validetion.dart';
@@ -68,7 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           padding: const EdgeInsets.all(10),
                           child: Image(
                             height: size(context: context).height * 0.26,
-                            image: const AssetImage("assets/logo.png"),
+                            image: const AssetImage(Global.notesLogo),
                           ),
                         ),
                         const CommonText(
@@ -152,10 +154,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.of(context)
-                                .pushReplacement(MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ));
+                            SPHelper.prefs.setBool(Global.isSignUp, true).then(
+                                  (value) =>
+                                      Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (context) => const LoginScreen(),
+                                    ),
+                                  ),
+                                );
                           },
                           child: const CommonText(
                             text: "Already have an account? Login",

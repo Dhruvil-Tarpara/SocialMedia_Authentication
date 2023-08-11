@@ -1,8 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:get_user/src/constant/widgets/common_text.dart';
-import 'package:get_user/src/constant/widgets/common_text_form_field.dart';
+import 'package:get_user/src/constant/global.dart';
+import 'package:get_user/src/constant/widgets/text.dart';
+import 'package:get_user/src/constant/widgets/text_form_field.dart';
 import 'package:get_user/src/provider/authentication/firebase_auth_helper.dart';
 import 'package:get_user/src/provider/database/cloud_database.dart';
 import 'package:get_user/src/provider/database/local_database.dart';
@@ -59,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.all(12),
                     child: Image(
                       height: size(context: context).height * 0.28,
-                      image: const AssetImage("assets/logo.png"),
+                      image: const AssetImage(Global.notesLogo),
                     ),
                   ),
                   const Align(
@@ -147,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 password: _passwordController.text);
                         if (user.user != null) {
                           FirebaseCloud.firebaseCloud.createDocument();
-                          SPHelper.prefs.setBool("is_login", true).then(
+                          SPHelper.prefs.setBool(Global.isLogin, true).then(
                                 (value) =>
                                     Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
@@ -187,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 .signInWithGoogle();
                             if (user.user != null) {
                               FirebaseCloud.firebaseCloud.createDocument();
-                              SPHelper.prefs.setBool("is_login", true).then(
+                              SPHelper.prefs.setBool(Global.isLogin, true).then(
                                     (value) =>
                                         Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
@@ -205,14 +206,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             }
                           },
-                          image: "assets/search.png",
+                          image: Global.googleLogo,
                         ),
                       ),
                       SizedBox(
                         width: size(context: context).width * 0.1,
                         child: _buildButton(
                           onPressed: () {},
-                          image: "assets/facebook.png",
+                          image: Global.facebookLogo,
                         ),
                       ),
                       SizedBox(
@@ -231,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             }
                           },
-                          image: "assets/apple.png",
+                          image: Global.appleLogo,
                         ),
                       ),
                       SizedBox(
@@ -244,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             );
                           },
-                          image: "assets/phone-call.png",
+                          image: Global.phoneLogo,
                         ),
                       ),
                     ],

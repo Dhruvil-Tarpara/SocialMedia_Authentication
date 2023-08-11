@@ -3,7 +3,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_user/src/constant/const_colors.dart';
-import 'package:get_user/src/constant/widgets/common_text.dart';
+import 'package:get_user/src/constant/global.dart';
+import 'package:get_user/src/constant/widgets/text.dart';
 import 'package:get_user/src/provider/authentication/firebase_auth_helper.dart';
 import 'package:get_user/src/provider/database/local_database.dart';
 import 'package:get_user/src/provider/firebase_analytics.dart';
@@ -40,13 +41,14 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             onPressed: () async {
               await FirebaseAuthHelper.firebaseAuthHelper.logout().then(
-                    (value) => SPHelper.prefs.setBool("is_login", false).then(
-                          (value) => Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
+                    (value) =>
+                        SPHelper.prefs.setBool(Global.isLogin, false).then(
+                              (value) => Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => const LoginScreen(),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
                   );
             },
             icon: const Icon(

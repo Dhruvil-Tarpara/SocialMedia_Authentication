@@ -5,7 +5,6 @@ import 'package:get_user/src/provider/database/local_database.dart';
 import 'package:get_user/src/provider/firebase_analytics.dart';
 import 'package:get_user/src/provider/model/user_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 import 'exaption_handle.dart';
 
 class FirebaseAuthHelper {

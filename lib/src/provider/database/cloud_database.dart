@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get_user/src/constant/global.dart';
 import 'package:get_user/src/provider/model/model.dart';
 import 'local_database.dart';
 
@@ -10,6 +11,7 @@ class FirebaseCloud {
   late CollectionReference collectionReference;
   late DocumentReference documentReference;
   final String _collectionName = "keep_notes";
+  final String _chaildCollectionName = "notes";
 
   void createCollection() {
     collectionReference = dbFirestore.collection(_collectionName);
@@ -17,22 +19,25 @@ class FirebaseCloud {
 
   void createDocument() {
     documentReference =
-        collectionReference.doc(SPHelper.prefs.getString("user_uid") ?? "");
+        collectionReference.doc(SPHelper.prefs.getString(Global.userUid) ?? "");
   }
 
   Stream<QuerySnapshot<Object?>> getData() {
-    return documentReference.collection("notes").snapshots();
+    return documentReference.collection(_chaildCollectionName).snapshots();
   }
 
   void insertData({required Note note}) {
-    documentReference.collection("notes").add(note.toJson());
+    documentReference.collection(_chaildCollectionName).add(note.toJson());
   }
 
   void upDateData({required String doc, required Note note}) {
-    documentReference.collection("notes").doc(doc).update(note.toJson());
+    documentReference
+        .collection(_chaildCollectionName)
+        .doc(doc)
+        .update(note.toJson());
   }
 
   void deleteData({required String doc}) {
-    documentReference.collection("notes").doc(doc).delete();
+    documentReference.collection(_chaildCollectionName).doc(doc).delete();
   }
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:get_user/src/constant/widgets/common_text.dart';
-import 'package:get_user/src/constant/widgets/common_text_form_field.dart';
+import 'package:get_user/src/constant/widgets/text.dart';
+import 'package:get_user/src/constant/widgets/text_form_field.dart';
 import 'package:get_user/src/provider/database/cloud_database.dart';
 import 'package:get_user/src/provider/model/model.dart';
 import 'package:get_user/src/utils/media_query.dart';

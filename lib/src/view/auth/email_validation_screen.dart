@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:get_user/src/constant/global.dart';
 import 'package:get_user/src/provider/authentication/firebase_auth_helper.dart';
 import 'package:get_user/src/provider/database/local_database.dart';
 import 'package:get_user/src/view/auth/login_screen.dart';
@@ -32,7 +33,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   checkEmailVerified() async {
     await FirebaseAuthHelper.firebaseAuthHelper.firebaseAuth.currentUser
         ?.reload();
-
     setState(() {
       isEmailVerified = FirebaseAuthHelper
           .firebaseAuthHelper.firebaseAuth.currentUser!.emailVerified;
@@ -44,7 +44,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         ),
       );
       timer?.cancel();
-      SPHelper.prefs.setBool("is_signUp", true).then(
+      SPHelper.prefs.setBool(Global.isSignUp, true).then(
             (value) => Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => const LoginScreen(),

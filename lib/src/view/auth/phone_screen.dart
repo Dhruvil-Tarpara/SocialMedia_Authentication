@@ -3,8 +3,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_user/src/constant/const_colors.dart';
-import 'package:get_user/src/constant/widgets/common_text.dart';
-import 'package:get_user/src/constant/widgets/common_text_form_field.dart';
+import 'package:get_user/src/constant/global.dart';
+import 'package:get_user/src/constant/widgets/text.dart';
+import 'package:get_user/src/constant/widgets/text_form_field.dart';
 import 'package:get_user/src/provider/authentication/firebase_auth_helper.dart';
 import 'package:get_user/src/provider/database/cloud_database.dart';
 import 'package:get_user/src/provider/database/local_database.dart';
@@ -73,7 +74,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                     padding: const EdgeInsets.all(12),
                     child: Image(
                       height: size(context: context).height * 0.28,
-                      image: const AssetImage("assets/logo.png"),
+                      image: const AssetImage(Global.notesLogo),
                     ),
                   ),
                   const Align(
@@ -194,7 +195,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                   FirebaseCloud.firebaseCloud.createDocument();
                   _otpController.clear();
                   _phoneController.clear();
-                  SPHelper.prefs.setBool("is_login", true).then(
+                  SPHelper.prefs.setBool(Global.isLogin, true).then(
                         (value) => Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (context) => const HomeScreen(),

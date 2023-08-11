@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_user/src/constant/const_colors.dart';
+import 'package:get_user/src/constant/global.dart';
 import 'package:get_user/src/provider/database/local_database.dart';
 import 'package:get_user/src/utils/media_query.dart';
 
@@ -34,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: SizedBox(
           height: size(context: context).height * 0.5,
-          child: Image.asset("assets/logo.gif"),
+          child: Image.asset(Global.notesGif),
         ),
       ),
     );
