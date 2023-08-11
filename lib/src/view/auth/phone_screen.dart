@@ -59,6 +59,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
       body: Center(
         child: Padding(
@@ -103,9 +104,9 @@ class _PhoneScreenState extends State<PhoneScreen> {
                     labelText: const CommonText(text: 'Phone Number'),
                     prefix: const Icon(Icons.phone),
                     validator: (value) {
-                      if (_phoneController.text.isEmpty &&
-                          _phoneController.text.length == 10 &&
-                          int.tryParse(_phoneController.text) != null) {
+                      if (value!.isEmpty ||
+                          value.length == 10 ||
+                          int.tryParse(value) != null) {
                         return 'Please enter a phone number';
                       }
                       return null;

@@ -69,8 +69,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Padding(
                           padding: const EdgeInsets.all(10),
                           child: Image(
-                            height: size(context: context).height * 0.26,
-                            image: NetworkImage(Global.notesLogo),
+                            height: size(context: context).height * 0.22,
+                            image:
+                                NetworkImage(Global.allImage[Global.notesLogo]),
                           ),
                         ),
                         const CommonText(

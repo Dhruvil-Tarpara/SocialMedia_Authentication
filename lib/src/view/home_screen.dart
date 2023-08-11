@@ -31,6 +31,20 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ConstColor.backgroundColor,
+        leading: Padding(
+          padding: const EdgeInsets.all(6),
+          child: CircleAvatar(
+            backgroundColor: ConstColor.buttonColor,
+            child: Padding(
+              padding: const EdgeInsets.all(1),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(
+                    SPHelper.prefs.getString(Global.userPhoto) ??
+                        Global.notesLogo),
+              ),
+            ),
+          ),
+        ),
         title: const CommonText(
           text: "Notes",
           size: 24,
@@ -98,10 +112,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           text: allData[index].title,
                           fontWeight: FontWeight.bold,
                           size: 20,
+                          color: ConstColor.backgroundColor,
                         ),
                         subtitle: CommonText(
                           text: allData[index].body,
                           size: 16,
+                          color: ConstColor.commonColor,
                         ),
                         trailing: IconButton(
                           onPressed: () {

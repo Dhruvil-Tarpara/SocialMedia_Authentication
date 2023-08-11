@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:get_user/src/constant/const_colors.dart';
 import 'package:get_user/src/constant/global.dart';
 import 'package:get_user/src/constant/widgets/text.dart';
 import 'package:get_user/src/constant/widgets/text_form_field.dart';
@@ -250,15 +251,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
+                  const Spacer(),
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => const SignUpScreen(),
                       ));
                     },
-                    child: const CommonText(
-                      text: "Don't have an account?Sign Up",
-                      color: Colors.blueAccent,
+                    child: CommonText(
+                      text: "Don't have an account? Sign Up",
+                      color: ConstColor.buttonColor,
                       size: 14,
                       fontWeight: FontWeight.w600,
                     ),
