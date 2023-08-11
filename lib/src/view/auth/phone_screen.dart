@@ -74,7 +74,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
                     padding: const EdgeInsets.all(12),
                     child: Image(
                       height: size(context: context).height * 0.28,
-                      image: const AssetImage(Global.notesLogo),
+                      image: NetworkImage(Global.allImage[Global.notesLogo]),
                     ),
                   ),
                   const Align(

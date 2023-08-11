@@ -5,10 +5,11 @@ class Global {
   static const String userPhoto = "user_photo";
   static const String isLogin = "is_login";
   static const String isSignUp = "is_signUp";
-  static const String googleLogo = "assets/search.png";
-  static const String facebookLogo = "assets/facebook.png";
-  static const String appleLogo = "assets/apple.png";
-  static const String phoneLogo = "assets/phone-call.png";
-  static const String notesLogo = "assets/logo.png";
-  static const String notesGif = "assets/logo.gif";
+  static String googleLogo = "search.png";
+  static String facebookLogo = "facebook.png";
+  static String appleLogo = "apple.png";
+  static String phoneLogo = "phone-call.png";
+  static String notesLogo = "logo.png";
+  static String notesGif = "logo.gif";
+  static Map<String, dynamic> allImage = {};
 }

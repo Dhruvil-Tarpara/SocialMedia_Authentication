@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.all(12),
                     child: Image(
                       height: size(context: context).height * 0.28,
-                      image: const AssetImage(Global.notesLogo),
+                      image: NetworkImage(Global.allImage[Global.notesLogo]),
                     ),
                   ),
                   const Align(
@@ -206,14 +206,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             }
                           },
-                          image: Global.googleLogo,
+                          image: Global.allImage[Global.googleLogo],
                         ),
                       ),
                       SizedBox(
                         width: size(context: context).width * 0.1,
                         child: _buildButton(
                           onPressed: () {},
-                          image: Global.facebookLogo,
+                          image: Global.allImage[Global.facebookLogo],
                         ),
                       ),
                       SizedBox(
@@ -232,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             }
                           },
-                          image: Global.appleLogo,
+                          image: Global.allImage[Global.appleLogo],
                         ),
                       ),
                       SizedBox(
@@ -245,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             );
                           },
-                          image: Global.phoneLogo,
+                          image: Global.allImage[Global.phoneLogo],
                         ),
                       ),
                     ],
@@ -282,8 +282,12 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
       child: Image(
-        image: AssetImage(image),
-        height: 22,
+        image: NetworkImage(image),
+        errorBuilder: (context, error, stackTrace) {
+          return const SizedBox.shrink();
+        },
+        fit: BoxFit.fill,
+        height: size(context: context).height * 0.022,
       ),
     );
   }

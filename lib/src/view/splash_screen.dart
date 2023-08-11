@@ -13,7 +13,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   Future<void> gotoNextScreen() async {
-    await Future.delayed(const Duration(seconds: 2)).then(
+    await Future.delayed(const Duration(seconds: 4)).then(
       (value) => Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => SPHelper.spHelper.initialScreen(),
@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: SizedBox(
           height: size(context: context).height * 0.5,
-          child: Image.asset(Global.notesGif),
+          child: Image.network(Global.allImage[Global.notesGif]),
         ),
       ),
     );
