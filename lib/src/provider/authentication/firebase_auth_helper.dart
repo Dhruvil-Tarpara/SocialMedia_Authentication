@@ -60,8 +60,10 @@ class FirebaseAuthHelper {
     }
   }
 
-  Future<UserData> signInWithPhoneNumber(
-      {required String smsCode, required String verificationId}) async {
+  Future<UserData> signInWithPhoneNumber({
+    required String smsCode,
+    required String verificationId,
+  }) async {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: verificationId,
       smsCode: smsCode,
@@ -69,7 +71,7 @@ class FirebaseAuthHelper {
     try {
       UserCredential userCredential =
           await firebaseAuth.signInWithCredential(credential);
-          await Analytics.analytics.loginEvent("true");
+      await Analytics.analytics.loginEvent("true");
       SPHelper.spHelper.getUser(
         userUid: userCredential.user!.uid,
         userEmail: userCredential.user?.email ?? "",
