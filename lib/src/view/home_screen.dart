@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    FirebaseCloud.firebaseCloud.createDocument();
   }
 
   @override
@@ -100,8 +101,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             _buildPageTransitionAnimation(
                               page: DetailScreen(
                                 note: Note(
-                                    title: allData[index].title,
-                                    body: allData[index].body),
+                                  title: allData[index].title,
+                                  body: allData[index].body,
+                                ),
                                 doc: data[index].id,
                                 isAdd: false,
                               ),

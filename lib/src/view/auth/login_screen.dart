@@ -8,7 +8,6 @@ import 'package:get_user/src/constant/widgets/text_form_field.dart';
 import 'package:get_user/src/provider/authentication/firebase_auth_helper.dart';
 import 'package:get_user/src/provider/database/cloud_database.dart';
 import 'package:get_user/src/provider/database/local_database.dart';
-import 'package:get_user/src/provider/firebase_analytics.dart';
 import 'package:get_user/src/provider/model/user_model.dart';
 import 'package:get_user/src/utils/media_query.dart';
 import 'package:get_user/src/utils/validetion.dart';
@@ -199,7 +198,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   );
                             } else {
-                              await Analytics.analytics.loginEvent("false");
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(user.error ?? ""),
@@ -264,6 +262,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       size: 14,
                       fontWeight: FontWeight.w600,
                     ),
+                  ),
+                  CommonText(
+                    text: Global.appVersion,
+                    color: ConstColor.backgroundColor,
+                    size: 10,
                   ),
                 ],
               ),

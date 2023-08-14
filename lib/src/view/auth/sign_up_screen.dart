@@ -75,12 +75,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                         const CommonText(
-                          text: "Sing Up",
+                          text: Global.signUpTitle,
                           size: 32,
                           fontWeight: FontWeight.w800,
                         ),
                         const CommonText(
-                          text: "Create an Account",
+                          text: Global.signUpSubTitle,
                           color: Colors.black,
                           size: 18,
                           fontWeight: FontWeight.w400,
@@ -89,12 +89,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           height: size(context: context).height * 0.03,
                         ),
                         CommonTextFormField(
-                          hintText: "User Name",
+                          hintText: Global.formUserName,
                           textInputType: TextInputType.text,
                           controller: _userNameController,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "enter name";
+                              return ("enter") + Global.formUserName;
                             } else {
                               return null;
                             }
@@ -104,15 +104,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           height: size(context: context).height * 0.02,
                         ),
                         CommonTextFormField(
-                          hintText: "Email",
+                          hintText: Global.formEmail,
                           textInputType: TextInputType.emailAddress,
                           controller: _emailController,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "enter email";
+                              return ("enter") + Global.formEmail;
                             } else if (!emailValidation(
                                 email: _emailController.text)) {
-                              return "invalied";
+                              return Global.formInvalied;
                             } else {
                               return null;
                             }
@@ -130,7 +130,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               return "enter password";
                             } else if (!passwordValidation(
                                 password: _passwordController.text)) {
-                              return "invalied";
+                              return Global.formInvalied;
                             } else {
                               return null;
                             }
@@ -147,7 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             if (value!.isEmpty) {
                               return "enter password";
                             } else if (value != _passwordController.text) {
-                              return "Invalid password";
+                              return Global.formInvalied;
                             } else {
                               return null;
                             }
@@ -200,7 +200,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             }
                           },
                           child: const CommonText(
-                            text: "Sing Up",
+                            text: Global.signUpTitle,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
